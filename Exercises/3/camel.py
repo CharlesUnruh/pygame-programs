@@ -12,6 +12,7 @@ def printOptions():
     for i in range(len(options)-1):
         print(chr(ord('A')+i) + ". " + options[i])
     print("Q. " + options[-1])
+    print("")
         
 def getInput():
     printOptions()
@@ -58,6 +59,7 @@ def rest(state):
     state.distance_natives += random.randint(7,14)
     
 def quit(state):
+    state.quit = True
     print("Thanks for playing!")
     
 
@@ -121,6 +123,7 @@ class State:
     thirst_canteen = 10
     thirst_canteen_max = 10
     distance_natives = -20
+    quit = False
 
     def __init__(self,distance,thirst,tiredness,canteen,natives):
         self.distance_total = distance
@@ -129,11 +132,18 @@ class State:
         self.thirst_canteen = canteen
         self.distance_natives = -natives
 
+def prelude():
+    print("You've stolen a Camel to escape a group of natives and need to cross a desert!")
+    print("Take care of your camel and keep hydrated for your journey,")
+    print("but there's not much time, the natives are on your hooves.")
+    print("")
+
 def main(argv):
     state = State(200,6,8,10,20)
     done = False
     
-    while not done:
+    prelude()
+    while not done and not state.quit:
         getCommand(getInput())(state)
         done = handleState(state)
     
